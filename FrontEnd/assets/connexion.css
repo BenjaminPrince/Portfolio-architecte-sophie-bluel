@@ -1,0 +1,81 @@
+.login-container {
+    font-family: Work Sans;
+    width: 100%;
+    max-width: 350px; /* Largeur maximale du formulaire */
+    padding: 20px;
+    
+    border-radius: 8px; /* Bords arrondis */
+    text-align: center;
+    
+    /* Centrage avec position absolue */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    font-family: 'Syne', sans-serif;
+    color: #333;
+}
+
+.login-form .input-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.login-form input {
+    width: calc(100% - 20px); /* Ajustement pour inclure le padding */
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombrage léger pour les champs de texte */
+   
+    font-size: 1em; /* Taille de police standard */
+    outline: none; /* Supprime l'outline lors de la sélection */
+}
+
+.login-button {
+    width: 55%; /* Bouton plus petit */
+    padding: 10px 20px;
+    margin-top: 20px; /* Espacer le bouton des champs de saisie */
+    border-radius: 25px; /* Bords très arrondis pour le bouton */
+    background-color: #1D6154; /* Couleur de fond du bouton */
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transition douce pour la couleur de fond */
+    font-family: Syne;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+
+}
+
+.login-button:hover {
+    background-color: #00382e; /* Assombrir le bouton au survol */
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 30px;
+    color: #004d40;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    text-align: center;
+}
+

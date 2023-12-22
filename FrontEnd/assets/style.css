@@ -30,7 +30,11 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
+	
+	
 }
+
 ol, ul {
 	list-style: none;
 }
@@ -56,7 +60,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 section {
 	margin: 50px 0
@@ -94,6 +98,14 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
+nav a {
+    text-decoration: none; /* Enlève le soulignement des liens dans la navigation */
+    color: inherit; /* Les liens héritent de la couleur de texte de leur parent */
+    transition: color 0.3s ease; /* Transition douce pour le changement de couleur */
+}
+nav a:hover {
+    color: #B1663C; /* Change la couleur au survol pour les liens dans la navigation */
+}
 
 li:hover {
 	color: #B1663C;
@@ -121,7 +133,14 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
+
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#portfolio  h2 {
 	text-align: center;
 	margin-bottom: 1em;
 }
@@ -147,6 +166,7 @@ margin: auto;
 }
 #contact h2{
 	margin-bottom: 20px;
+	flex-grow: 1;
 }
 #contact form {
 	text-align: left;
@@ -183,6 +203,60 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
+
+
+/* Edit page */
+
+.edit-mode-banner {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 45px; /* Hauteur fixe pour la bannière */
+    display: flex; /* Utilisation de flexbox pour le centrage */
+    align-items: center; /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
+}
+
+
+
+
+.portfolio-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+	margin: 80px;
+	margin-left: 40%;
+}
+
+#portfolio h2 {
+    margin: 0; /* Enlève la marge par défaut du titre */
+    margin-right: 10px; /* Ajoute un peu d'espace entre le titre et l'élément d'édition */
+
+}
+
+.edit-projects {
+    display: none; /* sera modifié par le script JS en 'flex' une fois l'utilisateur connecté */
+    align-items: center;
+    cursor: pointer;
+}
+
+.edit-projects i {
+    margin-right: 5px;
+	margin-left: 15px;
+}
+
+
+
+
+
+
+
 

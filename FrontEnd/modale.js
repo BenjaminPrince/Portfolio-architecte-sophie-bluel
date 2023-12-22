@@ -1,0 +1,187 @@
+// Fonction pour charger et afficher les images
+async function loadImages() {
+    const galleryContainer = document.querySelector('.gallery-container');
+    try {
+        const response = await fetch('http://localhost:5678/api/works');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const works = await response.json();
+        galleryContainer.innerHTML = '';
+        works.forEach(work => {
+            const imageElement = document.createElement('div');
+            imageElement.className = 'gallery-item';
+            imageElement.innerHTML = `
+                <img src="${work.imageUrl}" alt="${work.title}" class="gallery-image">
+                <button class="delete-btn" onclick="deleteWork(${work.id})">
+                    <i class="fa-solid fa-trash-can" style="color: #ffffff;"></i>
+                </button>
+            `;
+            galleryContainer.appendChild(imageElement);
+        });
+    } catch (error) {
+        console.error('Erreur lors du chargement des images:', error);
+    }
+}
+
+// Fonction pour supprimer un travail
+async function deleteWork(workId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        console.log(`Projet ${workId} supprimé avec succès.`);
+        loadImages(); // Actualiser les images après la suppression
+    } catch (error) {
+        console.error('Erreur lors de la suppression du projet:', error);
+    }
+}
+
+// Fonction pour charger les catégories depuis le backend
+async function loadCategories() {
+    try {
+        const response = await fetch('http://localhost:5678/api/categories');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const categories = await response.json();
+
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = ''; // Effacer les options existantes
+
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Erreur lors du chargement des catégories:', error);
+    }
+}
+
+// Fonction pour ouvrir la modale de gestion des travaux
+function openWorkModal() {
+    const workModal = document.getElementById('workModal');
+    const addPhotoModal = document.getElementById('addPhotoModal');
+    
+    workModal.style.display = 'block';
+    addPhotoModal.style.display = 'none';
+    loadImages();
+}
+
+// Fonction pour ouvrir la modale d'ajout de photo
+function openAddPhotoModal() {
+    const workModal = document.getElementById('workModal');
+    const addPhotoModal = document.getElementById('addPhotoModal');
+    
+    workModal.style.display = 'none';
+    addPhotoModal.style.display = 'block';
+    loadCategories(); // Charger les catégories lors de l'ouverture de la modale
+}
+
+// Ouvrir la modale de gestion des travaux au clic du bouton "Modifier"
+document.getElementById('edit-projects').addEventListener('click', openWorkModal);
+
+// Ouvrir la modale d'ajout de photo au clic du bouton "Ajouter une photo"
+document.getElementById('addPhotoBtn').addEventListener('click', openAddPhotoModal);
+
+// Ajouter un gestionnaire d'événements pour le formulaire d'ajout de photo
+document.getElementById('addPhotoForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    // Vérification des champs du formulaire
+    const titleInput = document.getElementById('titleInput').value;
+    const categorySelect = document.getElementById('categorySelect').value;
+    const imageFile = document.getElementById('mediaInput').files[0];
+
+    if (!titleInput.trim() || !categorySelect || !imageFile) {
+        alert('Tous les champs sont requis.'); // Affiche une alerte pour l'utilisateur
+        return;
+    }
+
+    // Créer un objet FormData à partir du formulaire
+    const formData = new FormData();
+    formData.append('title', titleInput);
+    formData.append('category', categorySelect);
+    formData.append('image', imageFile);
+
+    try {
+        // Envoi des données au backend via Fetch
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Pas de 'Content-Type' ici
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Traiter la réponse
+        const result = await response.json();
+        alert('Projet ajouté avec succès!'); // Affiche une notification de succès
+        closeModal('addPhotoModal');
+        openWorkModal(); // Mettre à jour la galerie
+        loadImages(); // Recharger les images pour afficher la nouvelle image ajoutée
+    } catch (error) {
+        alert('Erreur lors de l’envoi du projet.'); // Affiche une notification d'erreur
+        console.error('Erreur envoi du projet:', error);
+    }
+});
+
+// Fermer les modales
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+// Fermer la modale lorsque l'utilisateur clique sur la croix
+document.querySelectorAll('.modal .close').forEach(closeButton => {
+    closeButton.addEventListener('click', () => {
+        closeModal(closeButton.closest('.modal').id);
+    });
+});
+
+// Fermer la modale en cliquant en dehors de celle-ci
+window.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Écoutez les changements sur le champ de téléchargement de fichier
+    document.getElementById('mediaInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Cachez le contenu d'upload
+        document.querySelector('.photo-upload-container .upload-content').style.display = 'none';
+  
+        // Affichez l'image téléchargée dans l'aperçu
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = URL.createObjectURL(file);
+        imagePreview.style.display = 'block'; // Assurez-vous que l'image est visible
+        
+        document.getElementById('backButton').addEventListener('click', openWorkModal);
+      }
+    });
+  
+    // Ajoutez d'autres gestionnaires d'événements au besoin ici
+  });
+  
+
+// Ajouter des gestionnaires d'événements pour les boutons d'ouverture des modales
+document.getElementById('edit-projects').addEventListener('click', openWorkModal);
+document.getElementById('addPhotoBtn').addEventListener('click', openAddPhotoModal);

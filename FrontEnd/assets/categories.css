@@ -1,0 +1,31 @@
+.filter-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    margin: 0 10px;
+    padding: 10px 20px; /* Ajustez selon vos préférences */
+    border: 1px solid #004d40; /* Bordure plus fine */
+    background-color: transparent;
+    border-radius: 30px; /* Ajustez le border-radius pour un arrondi modéré */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #004d40; /* Couleur du texte initiale */
+    font-weight: bold;
+    font-family: 'Syne', sans-serif; /* Utilisation de la police Syne */
+    font-size: 16px;
+}
+
+.filter-btn:hover {
+    background-color: #004d40; /* Couleur de fond au survol */
+    color: white; /* Couleur du texte au survol */
+}
+
+/* Style pour le bouton actuellement sélectionné */
+.filter-btn.active {
+    background-color: #004d40; /* Arrière-plan du bouton actif */
+    color: white; /* Texte du bouton actif */
+}
+
+
