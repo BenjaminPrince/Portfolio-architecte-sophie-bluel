@@ -20,7 +20,7 @@ function checkLoginState() {
 
         // Change le lien de connexion en "Déconnexion"
         if (loginButton) {
-            loginButton.textContent = 'Déconnexion';
+            loginButton.textContent = 'Logout';
             loginButton.href = '#';
             loginButton.addEventListener('click', (e) => {
                 e.preventDefault();
