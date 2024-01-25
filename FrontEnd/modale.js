@@ -24,6 +24,30 @@ async function loadImages() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('mediaInput').addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.querySelector('.photo-upload-container .upload-content').style.display = 'none';
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = 'block';
+
+            document.getElementById('backButton').style.display = 'block';
+
+            document.getElementById('deleteIcon').addEventListener('click', async function() {
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                document.getElementById('backButton').style.display = 'none';
+
+                // Supprimez la ligne suivante si vous ne souhaitez pas recharger les images après la suppression
+                await loadImages();
+            });
+        }
+    });
+});
+
+
 // modale.js
 
 // Fonction pour supprimer un travail
@@ -169,29 +193,6 @@ window.addEventListener('click', (event) => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('mediaInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            document.querySelector('.photo-upload-container .upload-content').style.display = 'none';
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = URL.createObjectURL(file);
-            imagePreview.style.display = 'block';
-
-            document.getElementById('backButton').style.display = 'block';
-
-            document.getElementById('deleteIcon').addEventListener('click', function() {
-                imagePreview.src = '';
-                imagePreview.style.display = 'none';
-                document.getElementById('backButton').style.display = 'none';
-                loadImages();
-            });
-        }
-    });
-});
-;
-
-  
 
 // Ajouter des gestionnaires d'événements pour les boutons d'ouverture des modales
 document.getElementById('edit-projects').addEventListener('click', openWorkModal);
