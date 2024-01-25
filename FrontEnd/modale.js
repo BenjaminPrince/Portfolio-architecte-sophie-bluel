@@ -24,7 +24,6 @@ async function loadImages() {
     }
 }
 
-// Fonction pour supprimer un travail
 async function deleteWork(workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -40,10 +39,10 @@ async function deleteWork(workId) {
 
         console.log(`Projet ${workId} supprimé avec succès.`);
 
-        // Émettre un événement personnalisé après la suppression réussie
-        const deleteEvent = new CustomEvent('workDeleted');
-        loadImages();
-        document.dispatchEvent(deleteEvent);
+        // Déclencher un événement personnalisé pour informer la page principale de la suppression
+        const event = new CustomEvent('workDeleted', { detail: { workId } });
+        document.dispatchEvent(event);
+       
     } catch (error) {
         console.error('Erreur lors de la suppression du projet:', error);
     }
