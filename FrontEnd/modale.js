@@ -100,7 +100,6 @@ document.getElementById('edit-projects').addEventListener('click', openWorkModal
 // Ouvrir la modale d'ajout de photo au clic du bouton "Ajouter une photo"
 document.getElementById('addPhotoBtn').addEventListener('click', openAddPhotoModal);
 
-// Ajouter un gestionnaire d'événements pour le formulaire d'ajout de photo
 document.getElementById('addPhotoForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -126,7 +125,7 @@ document.getElementById('addPhotoForm').addEventListener('submit', async functio
             method: 'POST',
             body: formData,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // Pas de 'Content-Type' ici
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
 
@@ -138,8 +137,8 @@ document.getElementById('addPhotoForm').addEventListener('submit', async functio
         const result = await response.json();
         alert('Projet ajouté avec succès!'); // Affiche une notification de succès
         closeModal('addPhotoModal');
-        openWorkModal(); // Mettre à jour la galerie
         loadImages(); // Recharger les images pour afficher la nouvelle image ajoutée
+        location.reload(); // Recharger la page après l'ajout réussi
     } catch (error) {
         alert('Erreur lors de l’envoi du projet.'); // Affiche une notification d'erreur
         console.error('Erreur envoi du projet:', error);
