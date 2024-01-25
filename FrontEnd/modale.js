@@ -25,7 +25,7 @@ async function loadImages() {
 }
 
 // Fonction pour supprimer un travail
-async function deleteWork(workId, callback) {
+async function deleteWork(workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: 'DELETE',
@@ -40,15 +40,15 @@ async function deleteWork(workId, callback) {
 
         console.log(`Projet ${workId} supprimé avec succès.`);
 
-        // Appel de la fonction de rappel (callback) pour mettre à jour la galerie
-        if (callback) {
-            callback();
-        }
-       
+        // Émettre un événement personnalisé après la suppression réussie
+        const deleteEvent = new CustomEvent('workDeleted');
+        loadImages();
+        document.dispatchEvent(deleteEvent);
     } catch (error) {
         console.error('Erreur lors de la suppression du projet:', error);
     }
 }
+
 
 
 // Fonction pour charger les catégories depuis le backend
