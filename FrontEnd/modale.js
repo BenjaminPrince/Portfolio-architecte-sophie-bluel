@@ -13,7 +13,7 @@ async function loadImages() {
             imageElement.className = 'gallery-item';
             imageElement.innerHTML = `
                 <img src="${work.imageUrl}" alt="${work.title}" class="gallery-image">
-                <button class="delete-btn" onclick="deleteWork(${work.id})">
+                <button class="delete-btn" onclick="deleteWork(${work.id}, loadImages)">
                     <i class="fa-solid fa-trash-can" style="color: #ffffff;"></i>
                 </button>
             `;
@@ -25,7 +25,7 @@ async function loadImages() {
 }
 
 // Fonction pour supprimer un travail
-async function deleteWork(workId) {
+async function deleteWork(workId, callback) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: 'DELETE',
@@ -39,11 +39,17 @@ async function deleteWork(workId) {
         }
 
         console.log(`Projet ${workId} supprimé avec succès.`);
-        loadImages(); // Actualiser les images après la suppression
+
+        // Appel de la fonction de rappel (callback) pour mettre à jour la galerie
+        if (callback) {
+            callback();
+        }
+       
     } catch (error) {
         console.error('Erreur lors de la suppression du projet:', error);
     }
 }
+
 
 // Fonction pour charger les catégories depuis le backend
 async function loadCategories() {
