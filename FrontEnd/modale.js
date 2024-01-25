@@ -65,15 +65,15 @@ async function deleteWork(workId) {
         }
 
         console.log(`Projet ${workId} supprimé avec succès.`);
-
-        // Déclencher un événement personnalisé pour informer la page principale de la suppression
-        const event = new CustomEvent('workDeleted', { detail: { workId } });
-        document.dispatchEvent(event);
        
+        // Rechargez la page après la suppression du projet
+        location.reload();
+
     } catch (error) {
         console.error('Erreur lors de la suppression du projet:', error);
     }
 }
+
 
 
 
