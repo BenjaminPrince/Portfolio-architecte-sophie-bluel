@@ -24,6 +24,9 @@ async function loadImages() {
     }
 }
 
+// modale.js
+
+// Fonction pour supprimer un travail
 async function deleteWork(workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -47,6 +50,7 @@ async function deleteWork(workId) {
         console.error('Erreur lors de la suppression du projet:', error);
     }
 }
+
 
 
 
@@ -168,22 +172,35 @@ window.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', function() {
     // Écoutez les changements sur le champ de téléchargement de fichier
     document.getElementById('mediaInput').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (file) {
-        // Cachez le contenu d'upload
-        document.querySelector('.photo-upload-container .upload-content').style.display = 'none';
-  
-        // Affichez l'image téléchargée dans l'aperçu
-        const imagePreview = document.getElementById('imagePreview');
-        imagePreview.src = URL.createObjectURL(file);
-        imagePreview.style.display = 'block'; // Assurez-vous que l'image est visible
-        
-        document.getElementById('backButton').addEventListener('click', openWorkModal);
-      }
+        const file = event.target.files[0];
+        if (file) {
+            // Cachez le contenu d'upload
+            document.querySelector('.photo-upload-container .upload-content').style.display = 'none';
+
+            // Affichez l'image téléchargée dans l'aperçu
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = 'block'; // Assurez-vous que l'image est visible
+
+            // Affichez le bouton de retour
+            document.getElementById('backButton').style.display = 'block';
+
+            // Ajoutez un gestionnaire d'événement au bouton de retour
+            document.getElementById('backButton').addEventListener('click', openWorkModal);
+        }
     });
-  
+
     // Ajoutez d'autres gestionnaires d'événements au besoin ici
-  });
+
+    // Écoutez l'événement personnalisé 'workDeleted' pour actualiser la galerie
+    document.addEventListener('workDeleted', function(event) {
+        const { workId } = event.detail;
+        // Actualiser la galerie en fonction de la suppression du projet (workId)
+        // Ajoutez le code nécessaire pour recharger les images de la galerie
+        loadImages(); // Par exemple, utilisez la fonction que vous utilisez pour charger les images initialement
+    });
+});
+
   
 
 // Ajouter des gestionnaires d'événements pour les boutons d'ouverture des modales
