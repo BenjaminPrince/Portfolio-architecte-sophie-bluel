@@ -192,9 +192,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ajoutez d'autres gestionnaires d'événements au besoin ici
 
-    // Écoutez l'événement personnalisé 'workDeleted' pour actualiser la galerie
+    // Écouter l'événement personnalisé 'workDeleted' pour actualiser la galerie
     document.addEventListener('workDeleted', function(event) {
         const { workId } = event.detail;
+
+        // Supprimer l'aperçu de l'image
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = ''; // Effacez l'URL de l'image
+        imagePreview.style.display = 'none'; // Cachez l'aperçu
+
+        // Masquer le bouton de retour
+        document.getElementById('backButton').style.display = 'none';
+
         // Actualiser la galerie en fonction de la suppression du projet (workId)
         // Ajoutez le code nécessaire pour recharger les images de la galerie
         loadImages(); // Par exemple, utilisez la fonction que vous utilisez pour charger les images initialement
